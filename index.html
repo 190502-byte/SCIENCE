@@ -12,7 +12,7 @@
   <script src="/uv/uv.config.js"></script>
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
-  <!-- 広告系スクリプトはコメントアウト -->
+  <!-- 広告系はコメントアウト -->
 </head>
 <body>
   <div id="videoad"></div>
@@ -81,18 +81,23 @@
 
   <script src="/assets/js/home.js"></script>
 
-  <!-- 読み込みエラー対策: UVが準備できた後で検索処理を有効化 -->
+  <!-- 読み込みエラー対策強化版スクリプト -->
   <script>
-    // UV configがロードされるのを待つ
-    document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('load', () => {  // onloadでUV完全ロードを待機
       const form = document.getElementById('form');
       const ifr = document.getElementById('ifr');
 
-      if (typeof __uv$config === 'undefined') {
-        console.error('__uv$config が定義されていません。/uv/uv.config.js のロードを確認してください。');
-        alert('プロキシ設定エラー: UV configが見つかりません。サーバー設定を確認してください。');
+      if (typeof __uv$config === 'undefined' || typeof __uv$config.encodeUrl !== 'function') {
+        console.error('UV Proxyエラー: __uv$config または encodeUrl が利用できません。');
+        console.log('確認事項: ');
+        console.log('1. /uv/uv.config.js が正しく存在・ロードされているか');
+        console.log('2. /uv/uv.bundle.js がロードされているか');
+        console.log('3. サーバーでUltravioletが正しくセットアップされているか (service worker登録など)');
+        alert('プロキシ設定エラーです。\nコンソール(F12)を開いて詳細を確認してください。');
         return;
       }
+
+      console.log('UV Proxy 準備完了: config loaded');
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -101,7 +106,7 @@
 
         let targetUrl = input;
 
-        // 検索ワードの場合Googleに変換
+        // 検索ワード → Google変換
         if (!/^https?:\/\//i.test(input) && !input.includes('.')) {
           targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
         } else if (!/^https?:\/\//i.test(input)) {
@@ -114,8 +119,9 @@
           ifr.src = proxiedUrl;
           console.log('成功: ' + proxiedUrl);
         } catch (err) {
-          console.error('読み込みエラー詳細:', err);
-          alert('読み込みエラーが発生しました。\nコンソール（F12）を見てください。\n原因例: UV config未ロード / 無効なURL / サーバー側エラー');
+          console.error('読み込みエラー詳細:', err.message, err.stack);
+          alert('読み込みエラーが発生しました。\n原因例:\n- 無効なURL\n- UV設定の問題\n- ネットワークエラー\n詳細はF12コンソールで確認');
+          ifr.src = 'about:blank'; // エラー時はクリア
         }
       });
     });
