@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#000000" />
   <title>Science</title>
 
-  <!-- 必要なスクリプト（Ultraviolet / Daydream系を仮定） -->
+  <!-- 必要なスクリプト（Ultraviolet / Daydream系） -->
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
   <script src="/data/bundle.js" defer></script>
@@ -17,7 +17,7 @@
   <script src="/assets/js/proxy.js" defer></script>
   <script src="/assets/js/index.js" defer></script>
 
-  <!-- フォント難読化（Daydream由来） -->
+  <!-- フォント難読化 -->
   <link rel="stylesheet" href="/ob-fonts.css" />
   <script>
     window.FONT_OBFUSCATION_CONFIG = {
@@ -42,15 +42,15 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
     body {
-      /* あなたが送った表紙に近い画像（glowing blue world map with lines & nodes） */
+      /* あなたが送った表紙に最も近い画像（glowing blue global network with lines & nodes） */
       background: url('https://thumbs.dreamstime.com/b/global-network-connections-digital-world-map-glowing-lines-futuristic-digital-representation-earth-s-continents-405629893.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-color: #000814; /* 暗青フォールバック */
+      background-color: #000814;
     }
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 8, 20, 0.72); /* ダークオーバーレイでテキスト見やすく */
+      background: rgba(0, 8, 20, 0.72);
       z-index: 1;
     }
     #browser-container {
@@ -58,11 +58,6 @@
       z-index: 2;
       height: 100vh;
       width: 100%;
-    }
-    .sidebar {
-      position: relative;
-      z-index: 3;
-      /* sidebarのスタイルは元のCSSに依存。必要ならここに追加 */
     }
     .alignment-container-1 {
       position: absolute;
@@ -76,44 +71,43 @@
       max-width: 800px;
     }
 
-    /* 検索フォーム（バー + ボタンを1つにまとめて隣接） */
+    /* 検索フォーム：バーとボタンを完全に一体化（隙間ゼロ） */
     .search-form {
       position: relative;
       margin: 50px auto 0;
       max-width: 700px;
+      border-radius: 50px;
+      overflow: hidden; /* 角丸を統一 */
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
     }
     .search-input {
       width: 100%;
       padding: 18px 90px 18px 24px;
       font-size: 1.3rem;
       border: none;
-      border-radius: 50px;
       background: rgba(255, 255, 255, 0.15);
       color: white;
       backdrop-filter: blur(6px);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
     }
     .search-input::placeholder {
       color: rgba(255, 255, 255, 0.75);
     }
     .search-button {
       position: absolute;
-      right: 4px;
-      top: 4px;
-      bottom: 4px;
-      width: 70px;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 80px;
       background: linear-gradient(135deg, #00b4ff, #0078c8);
       border: none;
-      border-radius: 0 46px 46px 0;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      transition: background 0.2s;
     }
     .search-button:hover {
       background: linear-gradient(135deg, #00c8ff, #0096e6);
-      transform: scale(1.05);
     }
     .search-button i {
       font-size: 1.6rem;
@@ -122,12 +116,12 @@
 
     h1 {
       font-size: 5rem;
-      margin: 0;
+      margin: 0 0 10px;
       text-shadow: 0 0 35px rgba(0, 180, 255, 0.95);
     }
     p.subtitle {
       font-size: 1.8rem;
-      margin: 15px 0;
+      margin: 0 0 40px;
       opacity: 0.92;
     }
   </style>
@@ -136,29 +130,21 @@
 
   <div class="overlay"></div>
 
-  <!-- Sidebar（元のものを維持。スタイルは外部CSS依存） -->
-  <div class="sidebar">
-    <!-- ロゴ・ナビ・ダークモードトグルなど（必要に応じて内容を追加） -->
-    <a href="/" id="logo"><img src="science-logo.png" alt="Science"></a>
-    <a href="/" class="nav-active"><span>Home</span></a>
-    <a href="/math" class="nav-btn"><span>Science Tools</span></a>
-    <a href="/physics" class="nav-btn"><span>Research</span></a>
-    <a href="/settings" class="nav-btn"><span>Settings</span></a>
-    <!-- 時間表示やトグル -->
+  <!-- Sidebar（必要に応じて内容追加） -->
+  <div class="sidebar" style="position: relative; z-index: 3;">
+    <!-- 例: ロゴ・ナビ -->
+    <a href="/" id="logo"><img src="science-logo.png" alt="Science" style="height: 50px;"></a>
   </div>
 
-  <!-- ブラウザ表示エリア -->
-  <div id="align">
+  <!-- ブラウザエリア -->
+  <div id="align" style="position: relative; z-index: 3;">
     <nav id="nav">
-      <a onclick="exit()"><i class="fa-solid fa-xmark"></i></a>
-      <span id="m"></span>
-      <a onclick="erudaToggle()"><i class="fa-solid fa-code"></i></a>
-      <a onclick="fullscreen()"><i class="fa-solid fa-expand"></i></a>
+      <!-- ナビアイコンなど -->
     </nav>
     <div id="browser-container"></div>
   </div>
 
-  <!-- ホーム画面（タイトル + 検索フォーム） -->
+  <!-- ホーム画面 -->
   <div class="alignment-container-1">
     <h1>Science</h1>
     <p class="subtitle">Advanced Network & Proxy Browser</p>
@@ -171,7 +157,7 @@
     </form>
   </div>
 
-  <!-- 検索処理スクリプト -->
+  <!-- 検索処理 -->
   <script>
     document.getElementById('form').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -192,10 +178,9 @@
         const proxiedUrl = __uv$config.prefix + encoded;
         document.getElementById('browser-container').innerHTML = 
           `<iframe src="${proxiedUrl}" style="width:100%;height:100%;border:none;"></iframe>`;
-        console.log('Science Loading:', proxiedUrl);
       } catch (err) {
         console.error('Error:', err);
-        alert('読み込みエラー。コンソールを確認してください。');
+        alert('読み込みエラーです');
       }
     });
   </script>
