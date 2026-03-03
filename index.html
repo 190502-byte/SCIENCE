@@ -4,24 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
   <meta name="theme-color" content="#000000" />
-  <title>Science</title>
-  <link rel="stylesheet" href="/assets/css/style.css" /> <!-- 元のスタイルを仮定 -->
+  <title>Science Proxy</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
   <script src="https://kit.fontawesome.com/be27c0ad9d.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
-  <!-- 広告系はコメントアウト（削除推奨） -->
-  <!-- <script async src="//api.adinplay.com/libs/aiptag/pub/SHY/shuttleproxy.com/tag.min.js"></script> -->
-  <!-- Google Analyticsなど -->
+  <!-- 広告系スクリプトはコメントアウト -->
 </head>
 <body>
   <div id="videoad"></div>
 
   <div class="sidebar">
     <a href="/" id="logo">
-      <img src="shuttle.png" alt="Logo"> <!-- ロゴをScience用に変更可能 -->
+      <img src="shuttle.png" alt="Logo">
     </a>
     <a href="/" id="logo"></a>
     <a href="/" class="nav-active"><span>Home</span></a>
@@ -59,66 +57,68 @@
     <iframe id="ifr" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 
-  <div class="alignment-container-1" style="margin-top:15%; position: relative; z-index: 3;">
+  <div class="alignment-container-1" style="margin-top:15%;">
     <div class="header-container">
       <div class="logo-image">
-        <h1 style="color: white; font-family: 'Poppins', sans-serif; text-align: center; font-size: 4.5rem; margin: 0; text-shadow: 0 0 20px rgba(0,180,255,0.8);">Science</h1>
+        <h1 style="color: white; font-family: 'Poppins', sans-serif; text-align: center;">Science</h1>
       </div>
     </div>
-    <p style="color: #ccc; text-align: center; font-size: 1.5rem; margin: 10px 0;">Advanced Network & Proxy Browser</p>
-
     <form id="form">
       <input autofocus autocomplete="off" class="search" id="search" placeholder="URL または 検索ワードを入力" required />
       <button type="submit" class="submit-button">
         <i class="fas fa-search searchicon"></i>
       </button>
     </form>
-
     <div id="suggestions"></div>
-
     <div style="margin-top: 50px; z-index: 1;">
       <div class="ad-container"></div>
     </div>
-
-    <footer style="text-align: center; margin-top: 40px;">
-      <a title="discord" href="https://discord.gg/xi">Discord</a> |
+    <footer>
+      <a title="discord" href="https://discord.gg/xi">Discord</a>
       <a title="github" href="https://github.com/shuttlenetwork/shuttle">Github</a>
     </footer>
   </div>
 
   <script src="/assets/js/home.js"></script>
 
-  <!-- 検索機能を実装（これで確実に動く） -->
+  <!-- 読み込みエラー対策: UVが準備できた後で検索処理を有効化 -->
   <script>
-    document.getElementById('form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const input = document.getElementById('search').value.trim();
-      if (!input) return;
+    // UV configがロードされるのを待つ
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('form');
+      const ifr = document.getElementById('ifr');
 
-      let target = input;
-      // 検索ワードならGoogleに変換
-      if (!/^https?:\/\//i.test(input) && !input.includes('.')) {
-        target = 'https://www.google.com/search?q=' + encodeURIComponent(input);
-      } else if (!/^https?:\/\//i.test(input)) {
-        target = 'https://' + input;
+      if (typeof __uv$config === 'undefined') {
+        console.error('__uv$config が定義されていません。/uv/uv.config.js のロードを確認してください。');
+        alert('プロキシ設定エラー: UV configが見つかりません。サーバー設定を確認してください。');
+        return;
       }
 
-      // UVプロキシでエンコードしてiframeにセット
-      try {
-        const encoded = __uv$config.encodeUrl(target);
-        const proxied = __uv$config.prefix + encoded;
-        document.getElementById('ifr').src = proxied;
-        console.log('Science Proxy Loaded:', proxied);
-      } catch (err) {
-        console.error('Proxy Error:', err);
-        alert('プロキシ読み込みエラー: ' + err.message);
-      }
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('search').value.trim();
+        if (!input) return;
+
+        let targetUrl = input;
+
+        // 検索ワードの場合Googleに変換
+        if (!/^https?:\/\//i.test(input) && !input.includes('.')) {
+          targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
+        } else if (!/^https?:\/\//i.test(input)) {
+          targetUrl = 'https://' + input;
+        }
+
+        try {
+          const encoded = __uv$config.encodeUrl(targetUrl);
+          const proxiedUrl = __uv$config.prefix + encoded;
+          ifr.src = proxiedUrl;
+          console.log('成功: ' + proxiedUrl);
+        } catch (err) {
+          console.error('読み込みエラー詳細:', err);
+          alert('読み込みエラーが発生しました。\nコンソール（F12）を見てください。\n原因例: UV config未ロード / 無効なURL / サーバー側エラー');
+        }
+      });
     });
-  </script>
-
-  <!-- particles.js設定例（背景粒子エフェクト、必要なら調整） -->
-  <script>
-    particlesJS('align', { /* particles設定をここに貼り付け（元のparticles.js参照） */ });
   </script>
 
 </body>
