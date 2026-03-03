@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+  <meta name="theme-color" content="#000000" />
+  <title>Science</title>
+
+  <!-- Daydream Xの必須スクリプト -->
+  <script src="/data/bundle.js" defer></script>
+  <script src="/data/config.js" defer></script>
+  <script src="/assets/config.js" defer></script>
+  <script src="/assets/all.js" defer></script>
+
+  <!-- フォント難読化 -->
+  <link rel="stylesheet" href="/ob-fonts.css" />
+  <script>
+    window.FONT_OBFUSCATION_CONFIG = {
+      enabled: true,
+      defaultFont: "plusjakartasans",
+      excludeInputs: false,
+      obfuscateTitle: false,
+      obfuscatePlaceholders: false
+    };
+  </script>
+  <script src="/ob-fonts.js"></script>
+
+  <!-- Daydreamのモジュール -->
+  <script type="module" crossorigin src="/4j3ejyjvel.js"></script>
+  <link rel="modulepreload" crossorigin href="/chunks/vendor-coruokhw.js">
+  <link rel="modulepreload" crossorigin href="/chunks/f7l1u5ds7s.js">
+  <link rel="modulepreload" crossorigin href="/chunks/lyc1vzahbi.js">
+  <link rel="modulepreload" crossorigin href="/chunks/zn6p58sxev.js">
+  <link rel="stylesheet" crossorigin href="/assets/9m12wrr97o.css">
+  <link rel="stylesheet" crossorigin href="/assets/o4eidrkflb.css">
+
+  <!-- Ultraviolet (必要なら維持) -->
+  <script src="/uv/uv.bundle.js"></script>
+  <script src="/uv/uv.config.js"></script>
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/be27c0ad9d.js" crossorigin="anonymous"></script>
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    body {
+      background: url('https://thumbs.dreamstime.com/b/global-network-connections-digital-world-map-glowing-lines-futuristic-digital-representation-earth-s-continents-405629893.jpg') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #0a0e1a;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 14, 26, 0.65);
+      z-index: 1;
+    }
+    #browser-container {
+      position: relative;
+      z-index: 2;
+      height: 100vh;
+    }
+    .sidebar, #align, .alignment-container-1 {
+      position: relative;
+      z-index: 3;
+    }
+    .search {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+    }
+    .search::placeholder { color: rgba(255,255,255,0.6); }
+  </style>
+</head>
+<body class="bg-[var(--background-color)] text-[var(--text-color)]">
+
+  <div class="overlay"></div>
+
+  <!-- Sidebar（名前をScienceに合わせたナビに調整可能） -->
+  <div class="sidebar">
+    <a href="/" id="logo">
+      <img src="science-logo.png" alt="Science Logo"> <!-- ロゴ画像をscience-logo.pngなどに変更推奨 -->
+    </a>
+    <a href="/" class="nav-active"><span>Home</span></a>
+    <a href="/math" class="nav-btn"><span>Science Tools</span></a>
+    <a href="/physics" class="nav-btn"><span>Research</span></a>
+    <a href="/settings" class="nav-btn"><span>Settings</span></a>
+    <a id="time" class="nav-btn" style="display: flex; justify-content: flex-end; margin-left: auto;"></a>
+    <div>
+      <input type="checkbox" class="checkbox" id="checkbox">
+      <label for="checkbox" class="checkbox-label">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+        <span class="ball"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- メインエリア -->
+  <div id="align">
+    <nav id="nav">
+      <a onclick="exit()">
+        <i class="fa-solid fa-xmark" style="color: white; margin-right: auto; margin-left: 20px; font-size: 24px; cursor: pointer;"></i>
+      </a>
+      <span id="m" style="margin: auto;"></span>
+      <a onclick="erudaToggle()">
+        <i class="fa-solid fa-code" style="color: white; margin-left: auto; margin-right: 5px; font-size: 20px; cursor: pointer;"></i>
+      </a>
+      <a onclick="fullscreen()">
+        <i class="fa-solid fa-expand" style="color: white; margin-left: auto; margin-right: 45px; font-size: 20px; cursor: pointer;"></i>
+      </a>
+    </nav>
+    <div id="browser-container"></div>
+  </div>
+
+  <!-- ホーム画面（Science風に変更） -->
+  <div class="alignment-container-1" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 4; color: white;">
+    <h1 style="font-size: 5rem; margin: 0; text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);">Science</h1>
+    <p style="font-size: 1.8rem; margin: 15px 0; opacity: 0.9;">Advanced Network & Proxy Browser</p>
+    
+    <form id="form" style="margin: 50px auto; max-width: 700px;">
+      <input autofocus autocomplete="off" class="search" id="search" placeholder="Enter URL or Scientific Query" required style="width: 100%; padding: 18px; font-size: 1.3rem; border-radius: 50px; border: none;" />
+      <button type="submit" class="submit-button" style="margin-left: -70px; padding: 18px 30px; background: rgba(0,180,255,0.8); border: none; border-radius: 0 50px 50px 0; cursor: pointer;">
+        <i class="fas fa-search" style="font-size: 1.5rem; color: white;"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- スクリプト -->
+  <script src="/assets/js/home.js"></script>
+  <script src="/assets/js/proxy.js" defer></script>
+  <script src="/assets/js/index.js" defer></script>
+
+  <script>
+    document.getElementById('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const input = document.getElementById('search').value.trim();
+      if (input) {
+        console.log('Science Browser Loading:', input);
+        // bundle.js が #browser-container にブラウザを表示する想定
+      }
+    });
+  </script>
+
+</body>
+</html>
