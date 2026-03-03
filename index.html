@@ -4,18 +4,81 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
   <meta name="theme-color" content="#000000" />
-  <title>Science Proxy</title>
+  <title>Science</title>
+
   <link rel="stylesheet" href="/assets/css/style.css" />
   <script src="https://kit.fontawesome.com/be27c0ad9d.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <!-- Ultraviolet必須スクリプト -->
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
+
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
-  <!-- 広告系はコメントアウト -->
+
+  <!-- 広告系はコメントアウト（必要なければ削除） -->
+  <!-- <script async src="//api.adinplay.com/libs/aiptag/pub/SHY/shuttleproxy.com/tag.min.js"></script> -->
+  <!-- Google Analyticsなど -->
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      background: url('https://thumbs.dreamstime.com/b/global-network-connections-digital-world-map-glowing-lines-futuristic-digital-representation-earth-s-continents-405629893.jpg') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #000814;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 8, 20, 0.75);
+      z-index: 1;
+    }
+    #align, .alignment-container-1, .sidebar {
+      position: relative;
+      z-index: 2;
+    }
+    .search {
+      width: 80%;
+      max-width: 600px;
+      padding: 16px 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px 0 0 50px;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      backdrop-filter: blur(8px);
+    }
+    .search::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    .submit-button {
+      padding: 16px 28px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 0 50px 50px 0;
+      background: #00aaff;
+      color: white;
+      cursor: pointer;
+      margin-left: -4px;
+    }
+    .submit-button:hover {
+      background: #0088dd;
+    }
+    h1 {
+      font-size: 4.5rem;
+      margin: 0;
+      text-shadow: 0 0 25px rgba(0,180,255,0.9);
+    }
+  </style>
 </head>
 <body>
-  <div id="videoad"></div>
+
+  <div class="overlay"></div>
 
   <div class="sidebar">
     <a href="/" id="logo">
@@ -26,7 +89,7 @@
     <a href="/math" class="nav-btn"><span>Games</span></a>
     <a href="/physics" class="nav-btn"><span>Apps</span></a>
     <a href="/settings" class="nav-btn"><span>Settings</span></a>
-    <a id="time" class="nav-btn" style="display: flex; justify-content: flex-end; margin-left: auto;"></a>
+    <a id="time" class="nav-btn" style="display:flex; justify-content:flex-end; margin-left:auto;"></a>
     <div>
       <input type="checkbox" class="checkbox" id="checkbox">
       <label for="checkbox" class="checkbox-label">
@@ -44,60 +107,66 @@
   <div id="align">
     <nav id="nav">
       <a onclick="exit()">
-        <i class="fa-solid fa-xmark" style="color: white; margin-right: auto; margin-left: 20px; font-size: 24px; cursor: pointer;"></i>
+        <i class="fa-solid fa-xmark" style="color:white; margin-right:auto; margin-left:20px; font-size:24px; cursor:pointer;"></i>
       </a>
-      <span id="m" style="margin: auto;"></span>
+      <span id="m" style="margin:auto;"></span>
       <a onclick="erudaToggle()">
-        <i class="fa-solid fa-code" style="color: white; margin-left: auto; margin-right: 5px; font-size: 20px; cursor: pointer;"></i>
+        <i class="fa-solid fa-code" style="color:white; margin-left:auto; margin-right:5px; font-size:20px; cursor:pointer;"></i>
       </a>
       <a onclick="fullscreen()">
-        <i class="fa-solid fa-expand" style="color: white; margin-left: auto; margin-right: 45px; font-size: 20px; cursor: pointer;"></i>
+        <i class="fa-solid fa-expand" style="color:white; margin-left:auto; margin-right:45px; font-size:20px; cursor:pointer;"></i>
       </a>
     </nav>
     <iframe id="ifr" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 
-  <div class="alignment-container-1" style="margin-top:15%;">
+  <div class="alignment-container-1" style="margin-top:15%; text-align:center; color:white; position:relative; z-index:3;">
     <div class="header-container">
       <div class="logo-image">
-        <h1 style="color: white; font-family: 'Poppins', sans-serif; text-align: center;">Science</h1>
+        <h1>Science</h1>
       </div>
     </div>
-    <form id="form">
+    <p style="font-size:1.5rem; margin:10px 0 40px;">Advanced Network & Proxy Browser</p>
+
+    <form id="form" style="display:flex; justify-content:center; max-width:700px; margin:0 auto;">
       <input autofocus autocomplete="off" class="search" id="search" placeholder="URL または 検索ワードを入力" required />
       <button type="submit" class="submit-button">
-        <i class="fas fa-search searchicon"></i>
+        <i class="fas fa-search"></i>
       </button>
     </form>
+
     <div id="suggestions"></div>
-    <div style="margin-top: 50px; z-index: 1;">
+
+    <div style="margin-top:50px; z-index:1;">
       <div class="ad-container"></div>
     </div>
-    <footer>
-      <a title="discord" href="https://discord.gg/xi">Discord</a>
+
+    <footer style="margin-top:60px;">
+      <a title="discord" href="https://discord.gg/xi">Discord</a> |
       <a title="github" href="https://github.com/shuttlenetwork/shuttle">Github</a>
     </footer>
   </div>
 
   <script src="/assets/js/home.js"></script>
 
-  <!-- 読み込みエラー対策強化版スクリプト -->
+  <!-- 検索機能（エラー対策強化版） -->
   <script>
-    window.addEventListener('load', () => {  // onloadでUV完全ロードを待機
+    window.addEventListener('load', function() {
       const form = document.getElementById('form');
       const ifr = document.getElementById('ifr');
 
-      if (typeof __uv$config === 'undefined' || typeof __uv$config.encodeUrl !== 'function') {
-        console.error('UV Proxyエラー: __uv$config または encodeUrl が利用できません。');
-        console.log('確認事項: ');
-        console.log('1. /uv/uv.config.js が正しく存在・ロードされているか');
-        console.log('2. /uv/uv.bundle.js がロードされているか');
-        console.log('3. サーバーでUltravioletが正しくセットアップされているか (service worker登録など)');
-        alert('プロキシ設定エラーです。\nコンソール(F12)を開いて詳細を確認してください。');
+      // UVが使える状態かチェック
+      if (typeof __uv$config === 'undefined' || !__uv$config.prefix || typeof __uv$config.encodeUrl !== 'function') {
+        console.error('Ultraviolet Proxy が準備できていません');
+        alert('プロキシ機能が利用できません。\n\n考えられる原因:\n・ /uv/uv.config.js が読み込まれていない\n・ サーバー側でUltravioletが正しく動いていない\n・ ブラウザのコンソール(F12)を確認してください');
+        form.onsubmit = function(e) {
+          e.preventDefault();
+          alert('現在プロキシが使えません。管理者へお問い合わせください。');
+        };
         return;
       }
 
-      console.log('UV Proxy 準備完了: config loaded');
+      console.log('Ultraviolet Proxy 準備完了');
 
       form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -106,22 +175,23 @@
 
         let targetUrl = input;
 
-        // 検索ワード → Google変換
-        if (!/^https?:\/\//i.test(input) && !input.includes('.')) {
-          targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
-        } else if (!/^https?:\/\//i.test(input)) {
-          targetUrl = 'https://' + input;
+        // 検索ワード → Google検索に変換
+        if (!/^https?:\/\//i.test(input)) {
+          if (input.includes('.') && !input.includes(' ')) {
+            targetUrl = 'https://' + input;
+          } else {
+            targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
+          }
         }
 
         try {
           const encoded = __uv$config.encodeUrl(targetUrl);
           const proxiedUrl = __uv$config.prefix + encoded;
           ifr.src = proxiedUrl;
-          console.log('成功: ' + proxiedUrl);
+          console.log('Proxy URL:', proxiedUrl);
         } catch (err) {
-          console.error('読み込みエラー詳細:', err.message, err.stack);
-          alert('読み込みエラーが発生しました。\n原因例:\n- 無効なURL\n- UV設定の問題\n- ネットワークエラー\n詳細はF12コンソールで確認');
-          ifr.src = 'about:blank'; // エラー時はクリア
+          console.error('Proxyエラー:', err);
+          ifr.src = 'data:text/html,<h2 style="color:red;text-align:center;margin-top:100px;">読み込みに失敗しました<br><small>' + err.message + '</small></h2>';
         }
       });
     });
