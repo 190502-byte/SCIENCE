@@ -1,106 +1,186 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-  <meta name="theme-color" content="#000000">
-  <title>Science</title>
-  <!-- UV必須ファイル（リポジトリに既にあるはず） -->
-  <script src="/uv/uv.bundle.js"></script>
-  <script src="/uv/uv.config.js"></script>
-  <!-- particles.js で世界地図風ネットワーク背景 -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Science Proxy</title>
   <style>
-    /* 写真通りのスタイル（ダーク背景 + 青紫ネットワーク） */
-    body, html {
-      margin: 0; padding: 0; height: 100%; overflow: hidden;
-      background: #000; color: #fff; font-family: sans-serif;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    #particles-js {
-      position: absolute; width: 100%; height: 100%;
-      background: radial-gradient(circle at center, #0a001f, #000);
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      height: 100vh;
+      color: white;
+      background: #000;
+      overflow: hidden;
     }
-    .container {
-      position: relative; z-index: 10; text-align: center; top: 30%;
-      transform: translateY(-50%);
+    /* 提供された写真をそのまま背景に */
+    .background {
+      position: fixed;
+      inset: 0;
+      background: url('ここに写真のURLを入れる') center center / cover no-repeat;
+      z-index: 1;
+    }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55); /* 暗くして文字が見やすく */
+      z-index: 2;
+    }
+    .content {
+      position: relative;
+      z-index: 3;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
     }
     h1 {
-      font-size: 5rem; margin: 0; letter-spacing: 10px;
-      color: #fff; text-shadow: 0 0 30px #8a2be2, 0 0 60px #00bfff;
+      font-size: 4.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+      letter-spacing: 2px;
     }
-    p {
-      font-size: 1.4rem; margin: 20px 0 40px; opacity: 0.8;
+    .subtitle {
+      font-size: 1.4rem;
+      opacity: 0.9;
+      margin-bottom: 3rem;
+      max-width: 600px;
     }
-    form {
-      max-width: 700px; margin: 0 auto; position: relative;
+    .search-container {
+      width: 100%;
+      max-width: 680px;
+      position: relative;
     }
-    input {
-      width: 100%; padding: 20px 25px; font-size: 1.3rem;
-      background: rgba(255,255,255,0.08); border: 1px solid rgba(0,212,255,0.4);
-      border-radius: 50px; color: white; backdrop-filter: blur(10px);
+    input[type="text"] {
+      width: 100%;
+      padding: 18px 24px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 60px;
+      background: rgba(255,255,255,0.12);
+      color: white;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      outline: none;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
-    input::placeholder { color: rgba(255,255,255,0.6); }
-    button {
-      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
-      background: #00d4ff; color: #000; border: none; border-radius: 50%;
-      width: 50px; height: 50px; font-size: 1.8rem; cursor: pointer;
+    input::placeholder {
+      color: rgba(255,255,255,0.6);
     }
-    /* iframeは後で表示（フルスクリーン風） */
-    #proxyFrame {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none;
-      display: none; /* 最初は隠す、Go押したら表示 */
+    .btn-go {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #0066ff;
+      color: white;
+      border: none;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .btn-go:hover {
+      background: #0055dd;
+      transform: translateY(-50%) scale(1.08);
+    }
+    iframe {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 10;
+      display: none;
+      background: #000;
+    }
+    .close-btn {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.8rem;
+      cursor: pointer;
+      z-index: 11;
+      display: none;
+      backdrop-filter: blur(8px);
     }
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
 
-  <div class="container">
+  <div class="background"></div>
+  <div class="overlay"></div>
+
+  <div class="content">
     <h1>Science</h1>
-    <p>Advanced Network & Proxy Browser</p>
+    <div class="subtitle">Advanced Network & Proxy Browser</div>
 
-    <form id="proxyForm">
-      <input id="inputUrl" placeholder="URL または 検索ワードを入力" autofocus autocomplete="off">
-      <button type="submit">→</button> <!-- 青い丸ボタン -->
-    </form>
+    <div class="search-container">
+      <input type="text" id="urlInput" placeholder="URL または 検索ワードを入力" autofocus />
+      <button class="btn-go" onclick="go()">→</button>
+    </div>
   </div>
 
-  <iframe id="proxyFrame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-modals"></iframe>
+  <iframe id="proxyFrame"></iframe>
+  <button class="close-btn" onclick="closeProxy()">×</button>
 
   <script>
-    // UV config（既存のuv.config.jsを尊重）
-    const form = document.getElementById('proxyForm');
-    const input = document.getElementById('inputUrl');
+    const input = document.getElementById('urlInput');
     const frame = document.getElementById('proxyFrame');
+    const closeBtn = document.querySelector('.close-btn');
 
-    form.addEventListener('submit', e => {
-      e.preventDefault();
+    function go() {
       let val = input.value.trim();
       if (!val) return;
 
-      if (!/^https?:\/\//i.test(val)) {
-        val = 'https://www.google.com/search?q=' + encodeURIComponent(val);
+      // 簡易URL補完
+      if (!val.startsWith('http://') && !val.startsWith('https://')) {
+        if (val.includes('.') && !val.includes(' ')) {
+          val = 'https://' + val;
+        } else {
+          // 検索ワードとしてGoogle検索に
+          val = 'https://www.google.com/search?q=' + encodeURIComponent(val);
+        }
       }
 
-      const encoded = __uv$config.prefix + __uv$config.encodeUrl(val);
-      frame.src = encoded;
-      frame.style.display = 'block'; // 写真みたいに検索後フル表示
-      document.querySelector('.container').style.display = 'none'; // 元のUI隠す（オプション）
-    });
+      frame.src = val;
+      frame.style.display = 'block';
+      closeBtn.style.display = 'block';
+      document.querySelector('.content').style.display = 'none';
+    }
 
-    // ネットワーク線背景（写真の地図線を再現）
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 100, density: { enable: true, value_area: 800 } },
-        color: { value: ['#00bfff', '#8a2be2', '#ffffff'] },
-        shape: { type: 'circle' },
-        opacity: { value: 0.4, random: true },
-        size: { value: 2, random: true },
-        line_linked: { enable: true, distance: 150, color: '#00bfff', opacity: 0.3, width: 1 },
-        move: { enable: true, speed: 1.5, direction: 'none', random: true }
-      },
-      interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'grab' } } }
+    function closeProxy() {
+      frame.src = 'about:blank';
+      frame.style.display = 'none';
+      closeBtn.style.display = 'none';
+      document.querySelector('.content').style.display = 'flex';
+      input.value = '';
+      input.focus();
+    }
+
+    // Enterキーでも起動
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') go();
     });
   </script>
+
 </body>
 </html>
