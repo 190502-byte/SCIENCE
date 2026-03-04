@@ -14,32 +14,21 @@
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
 
-  <!-- 元の広告・トラッキング系はそのまま（コメントアウトしたい場合は削除） -->
-  <script async src="//api.adinplay.com/libs/aiptag/pub/SHY/shuttleproxy.com/tag.min.js"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDSZE0VTXD"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-QDSZE0VTXD');
-  </script>
-
   <style>
     body {
       margin: 0;
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      background: url('https://thumbs.dreamstime.com/b/global-world-map-network-digital-earth-connection-futuristic-technology-background-communication-web-illustration-glowing-blue-402610835.jpg') no-repeat center center fixed;
+      background: url('https://static.vecteezy.com/system/resources/previews/056/428/173/large_2x/glowing-world-map-futuristic-global-network-design-for-digital-media-photo.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
       background-color: #000814;
       font-family: 'Poppins', sans-serif;
     }
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 8, 20, 0.55); /* 地図が見えやすい薄め調整 */
+      background: rgba(0, 8, 20, 0.55);
       z-index: 1;
     }
     .alignment-container-1 {
@@ -57,7 +46,6 @@
       font-size: 5.5rem;
       margin: 0 0 15px;
       text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);
-      letter-spacing: 2px;
     }
     .subtitle {
       font-size: 1.8rem;
@@ -116,7 +104,7 @@
     <a href="/math" class="nav-btn"><span>Games</span></a>
     <a href="/physics" class="nav-btn"><span>Apps</span></a>
     <a href="/settings" class="nav-btn"><span>Settings</span></a>
-    <a id="time" class="nav-btn" style="display: flex; justify-content: flex-end; margin-left: auto;"></a>
+    <a id="time" class="nav-btn" style="display:flex;justify-content:flex-end;margin-left:auto;"></a>
     <div>
       <input type="checkbox" class="checkbox" id="checkbox">
       <label for="checkbox" class="checkbox-label">
@@ -130,17 +118,17 @@
   <div id="align">
     <nav id="nav">
       <a onclick="exit()">
-        <i class="fa-solid fa-xmark" style="color: white; margin-right: auto; margin-left: 20px; font-size: 24px; cursor: pointer;"></i>
+        <i class="fa-solid fa-xmark" style="color:white;margin-right:auto;margin-left:20px;font-size:24px;cursor:pointer;"></i>
       </a>
-      <span id="m" style="margin: auto;"></span>
+      <span id="m" style="margin:auto;"></span>
       <a onclick="erudaToggle()">
-        <i class="fa-solid fa-code" style="color: white; margin-left: auto; margin-right: 5px; font-size: 20px; cursor: pointer;"></i>
+        <i class="fa-solid fa-code" style="color:white;margin-left:auto;margin-right:5px;font-size:20px;cursor:pointer;"></i>
       </a>
       <a onclick="fullscreen()">
-        <i class="fa-solid fa-expand" style="color: white; margin-left: auto; margin-right: 45px; font-size: 20px; cursor: pointer;"></i>
+        <i class="fa-solid fa-expand" style="color:white;margin-left:auto;margin-right:45px;font-size:20px;cursor:pointer;"></i>
       </a>
     </nav>
-    <iframe id="ifr" style="width:100%; height:100%; border:none;"></iframe>
+    <iframe id="ifr" style="width:100%;height:100%;border:none;"></iframe>
   </div>
 
   <div class="alignment-container-1">
@@ -162,30 +150,31 @@
     </footer>
   </div>
 
-  <!-- 元のスクリプト（これでプロキシ性能が完全に復活） -->
+  <!-- 元のShuttleプロキシスクリプト（これでプロキシ性能を完全に維持） -->
   <script src="/assets/js/home.js"></script>
   <script src="/assets/js/proxy.js" defer></script>
 
-  <!-- 入力補完だけ軽く行って、元のhome.jsに任せる -->
+  <!-- 入力補完だけ軽く行い、元のプロキシ処理に完全に任せる -->
   <script>
     document.getElementById('form').addEventListener('submit', function(e) {
-      // preventDefault() はしない → home.js がイベントを処理できるように
+      // preventDefault() をしない → home.js がイベントを処理できる
       const input = document.getElementById('search').value.trim();
       if (!input) return;
 
-      let url = input;
+      let url = input.trim();
+
+      // 簡易補完（元の処理を邪魔しない範囲で）
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         if (url.includes('.') && !url.includes(' ')) {
           url = 'https://' + url;
         } else {
           url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
         }
-        document.getElementById('search').value = url; // 入力欄も更新
+        document.getElementById('search').value = url; // 入力欄を更新
       }
 
-      // home.js / proxy.js がここからプロキシ処理を引き継ぐ
-      // 必要に応じてコンソールログで確認
-      console.log('Shuttle Proxyに処理を渡します:', url);
+      // home.js がここからプロキシ処理を引き継ぐ（シャトルの性能がそのまま生きる）
+      console.log('Shuttleプロキシに処理を渡します:', url);
     });
   </script>
 
