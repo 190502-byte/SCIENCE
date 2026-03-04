@@ -2,192 +2,181 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Science - Advanced Network & Proxy Browser</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+  <meta name="theme-color" content="#000000" />
+  <title>Science</title>
+
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <script src="https://kit.fontawesome.com/be27c0ad9d.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="/uv/uv.bundle.js"></script>
+  <script src="/uv/uv.config.js"></script>
+  <script src="/assets/js/index.js" defer></script>
+  <script src="/assets/js/particles.js" defer></script>
+
   <style>
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #0b0f1f;
-      color: #d8e0ff;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* 背景写真を忠実に再現するためのスタイル */
-    .background {
-      position: fixed;
-      inset: 0;
-      background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
-      opacity: 0.18;
-      z-index: -2;
-      filter: 
-        brightness(0.45) 
-        contrast(1.15) 
-        saturate(0.8) 
-        hue-rotate(200deg)    /* 青紫寄りにシフト */
-        sepia(0.1);
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(
-        to bottom, 
-        rgba(10, 12, 30, 0.78) 0%, 
-        rgba(20, 15, 50, 0.88) 50%, 
-        rgba(10, 12, 30, 0.92) 100%
-      );
-      z-index: -1;
-    }
-
-    header {
-      text-align: center;
-      padding: 140px 20px 80px;
-    }
-
-    h1 {
-      font-size: 6.2rem;
-      font-weight: 900;
-      background: linear-gradient(90deg, #5c9dff, #b08aff, #d18cff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -3px;
-      text-shadow: 0 0 50px rgba(92, 157, 255, 0.45);
-    }
-
-    .subtitle {
-      font-size: 1.6rem;
-      margin-top: 1.2rem;
-      color: #a0b0e0;
-      font-weight: 300;
-      letter-spacing: 2px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
-    }
-
-    .search-container {
-      max-width: 780px;
-      margin: 90px auto;
-      padding: 0 25px;
-      position: relative;
-    }
-
-    .input-wrapper {
-      position: relative;
-      display: flex;
-      background: rgba(25, 35, 65, 0.65);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(92, 157, 255, 0.28);
-      border-radius: 60px;
+      height: 100vh;
       overflow: hidden;
-      box-shadow: 
-        0 15px 50px rgba(0,0,0,0.65),
-        inset 0 1px 0 rgba(255,255,255,0.04);
-      transition: all 0.35s ease;
+      background: url('https://static.vecteezy.com/system/resources/previews/056/428/173/large_2x/glowing-world-map-futuristic-global-network-design-for-digital-media-photo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      background-color: #000814;
+      font-family: 'Poppins', sans-serif;
     }
-
-    .input-wrapper:hover,
-    .input-wrapper:focus-within {
-      border-color: #7ab0ff;
-      box-shadow: 
-        0 0 40px rgba(92, 157, 255, 0.4),
-        inset 0 1px 0 rgba(255,255,255,0.07);
-      transform: translateY(-3px);
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 8, 20, 0.55);
+      z-index: 1;
     }
-
-    input[type="text"] {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 24px 32px;
-      font-size: 1.35rem;
-      color: #e0eaff;
-      outline: none;
-    }
-
-    input::placeholder {
-      color: #6b82a8;
-    }
-
-    button {
-      background: linear-gradient(90deg, #4d90ff, #a070ff, #c080ff);
-      border: none;
-      color: white;
-      font-size: 1.3rem;
-      font-weight: 700;
-      padding: 0 50px;
-      cursor: pointer;
-      transition: all 0.35s;
-    }
-
-    button:hover {
-      background: linear-gradient(90deg, #70aaff, #c090ff, #e0a0ff);
-      transform: scale(1.06);
-    }
-
-    .hint {
-      text-align: center;
-      margin-top: 2rem;
-      color: #7a8db0;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
-    }
-
-    /* 左右の矢印（装飾） */
-    .nav-arrow {
+    .alignment-container-1 {
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
-      font-size: 4rem;
-      color: rgba(92, 157, 255, 0.3);
-      user-select: none;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 900px;
+      text-align: center;
+      color: white;
+      z-index: 3;
+    }
+    h1 {
+      font-size: 5.5rem;
+      margin: 0 0 15px;
+      text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);
+    }
+    .subtitle {
+      font-size: 1.8rem;
+      margin: 0 0 50px;
+      opacity: 0.9;
+    }
+    form {
+      display: flex;
+      max-width: 650px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.08);
+      border-radius: 60px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+    .search {
+      flex: 1;
+      padding: 18px 25px;
+      font-size: 1.25rem;
+      border: none;
+      background: transparent;
+      color: white;
+    }
+    .search::placeholder {
+      color: rgba(255,255,255,0.6);
+    }
+    .submit-button {
+      width: 80px;
+      background: #00aaff;
+      border: none;
+      color: white;
+      font-size: 1.4rem;
       cursor: pointer;
-      transition: color 0.3s, transform 0.3s;
+      transition: background 0.2s;
     }
-
-    .nav-arrow:hover {
-      color: #7ab0ff;
-      transform: translateY(-50%) scale(1.15);
+    .submit-button:hover {
+      background: #0088dd;
     }
-
-    .left { left: 6%; }
-    .right { right: 6%; }
-
-    @media (max-width: 768px) {
-      h1 { font-size: 4.5rem; }
-      header { padding: 100px 15px 60px; }
-      .search-container { margin: 70px auto; }
-      input[type="text"] { padding: 20px 28px; font-size: 1.2rem; }
-      button { padding: 0 40px; }
-      .nav-arrow { font-size: 3rem; }
+    #align, .sidebar {
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
 
-  <div class="background"></div>
   <div class="overlay"></div>
 
-  <div class="left nav-arrow"><</div>
-  <div class="right nav-arrow">></div>
-
-  <header>
-    <h1>Science</h1>
-    <div class="subtitle">Advanced Network & Proxy Browser</div>
-  </header>
-
-  <div class="search-container">
-    <div class="input-wrapper">
-      <input type="text" placeholder="URL または検索ワードを入力" />
-      <button>🔍</button>
+  <div class="sidebar">
+    <a href="/" id="logo">
+      <img src="shuttle.png" alt="Logo">
+    </a>
+    <a href="/" id="logo"></a>
+    <a href="/" class="nav-active"><span>Home</span></a>
+    <a href="/math" class="nav-btn"><span>Games</span></a>
+    <a href="/physics" class="nav-btn"><span>Apps</span></a>
+    <a href="/settings" class="nav-btn"><span>Settings</span></a>
+    <a id="time" class="nav-btn" style="display:flex;justify-content:flex-end;margin-left:auto;"></a>
+    <div>
+      <input type="checkbox" class="checkbox" id="checkbox">
+      <label for="checkbox" class="checkbox-label">
+        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
+        <span class="ball"></span>
+      </label>
     </div>
-    <div class="hint">高速・匿名・セキュアに世界を探索</div>
   </div>
+
+  <div id="align">
+    <nav id="nav">
+      <a onclick="exit()">
+        <i class="fa-solid fa-xmark" style="color:white;margin-right:auto;margin-left:20px;font-size:24px;cursor:pointer;"></i>
+      </a>
+      <span id="m" style="margin:auto;"></span>
+      <a onclick="erudaToggle()">
+        <i class="fa-solid fa-code" style="color:white;margin-left:auto;margin-right:5px;font-size:20px;cursor:pointer;"></i>
+      </a>
+      <a onclick="fullscreen()">
+        <i class="fa-solid fa-expand" style="color:white;margin-left:auto;margin-right:45px;font-size:20px;cursor:pointer;"></i>
+      </a>
+    </nav>
+    <iframe id="ifr" style="width:100%;height:100%;border:none;"></iframe>
+  </div>
+
+  <div class="alignment-container-1">
+    <h1>Science</h1>
+    <p class="subtitle">Advanced Network & Proxy Browser</p>
+
+    <form id="form">
+      <input autofocus autocomplete="off" class="search" id="search" placeholder="URL または 検索ワードを入力" required />
+      <button type="submit" class="submit-button">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+
+    <div id="suggestions"></div>
+
+    <footer style="margin-top:60px;">
+      <a title="discord" href="https://discord.gg/xi">Discord</a> |
+      <a title="github" href="https://github.com/shuttlenetwork/shuttle">Github</a>
+    </footer>
+  </div>
+
+  <!-- 元のShuttleプロキシスクリプト（これでプロキシ性能を完全に維持） -->
+  <script src="/assets/js/home.js"></script>
+  <script src="/assets/js/proxy.js" defer></script>
+
+  <!-- 入力補完だけ軽く行い、元のプロキシ処理に完全に任せる -->
+  <script>
+    document.getElementById('form').addEventListener('submit', function(e) {
+      // preventDefault() をしない → home.js がイベントを処理できる
+      const input = document.getElementById('search').value.trim();
+      if (!input) return;
+
+      let url = input.trim();
+
+      // 簡易補完（元の処理を邪魔しない範囲で）
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        if (url.includes('.') && !url.includes(' ')) {
+          url = 'https://' + url;
+        } else {
+          url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+        }
+        document.getElementById('search').value = url; // 入力欄を更新
+      }
+
+      // home.js がここからプロキシ処理を引き継ぐ（シャトルの性能がそのまま生きる）
+      console.log('Shuttleプロキシに処理を渡します:', url);
+    });
+  </script>
 
 </body>
 </html>
