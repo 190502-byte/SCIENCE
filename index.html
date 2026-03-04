@@ -17,13 +17,13 @@
     .bg {
       position: fixed;
       inset: 0;
-      background: url('https://cdn.clipkit.co/tenants/591/articles/images/000/000/899/medium/f6cdf59b-823b-4c09-838c-b17ce3124e31.jpg?1593063420') center / cover no-repeat;
+      background: url('science-bg.jpg') center / cover no-repeat;
       z-index: -2;
     }
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.45); /* 背景が派手なので文字視認性確保。0.35〜0.5で調整可 */
+      background: rgba(0, 0, 0, 0.42);
       z-index: -1;
     }
     .container {
@@ -49,7 +49,6 @@
       opacity: 0.88;
       margin: 0 0 6rem;
       max-width: 680px;
-      line-height: 1.4;
     }
     .search-bar {
       position: relative;
@@ -62,10 +61,9 @@
       font-size: 1.2rem;
       border: none;
       border-radius: 999px;
-      background: rgba(70, 70, 80, 0.8); /* 灰色半透明 */
+      background: rgba(70, 70, 80, 0.8);
       color: white;
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
       outline: none;
       box-shadow: 0 6px 30px rgba(0,0,0,0.5);
     }
@@ -88,7 +86,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
     }
     button:hover {
       background: #0055dd;
@@ -102,7 +99,6 @@
       border: none;
       display: none;
       z-index: 10;
-      background: #fff;
     }
     .close-btn {
       position: fixed;
@@ -118,7 +114,6 @@
       cursor: pointer;
       display: none;
       z-index: 11;
-      backdrop-filter: blur(8px);
     }
   </style>
 </head>
@@ -148,7 +143,6 @@
     function goProxy() {
       let val = input.value.trim();
       if (!val) return;
-
       if (!val.startsWith('http')) {
         if (val.includes('.') && !val.includes(' ')) {
           val = 'https://' + val;
@@ -156,7 +150,6 @@
           val = 'https://www.google.com/search?q=' + encodeURIComponent(val);
         }
       }
-
       frame.src = val;
       frame.style.display = 'block';
       closeBtn.style.display = 'block';
@@ -172,7 +165,7 @@
       input.focus();
     }
 
-    input.addEventListener('keydown', (e) => {
+    input.addEventListener('keydown', e => {
       if (e.key === 'Enter') goProxy();
     });
   </script>
