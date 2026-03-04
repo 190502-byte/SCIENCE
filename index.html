@@ -85,6 +85,10 @@
     .submit-button:hover {
       background: #0088dd;
     }
+    #align, .sidebar {
+      position: relative;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -149,43 +153,39 @@
   <script src="/assets/js/home.js"></script>
   <script src="/assets/js/proxy.js" defer></script>
 
-  <!-- 接続拒否対策強化版: UVダメなら直接ロード -->
+  <!-- 検索ボタン押下 → 元のShuttleプロキシ処理を優先（home.jsに任せる） -->
   <script>
+    // 元のhome.jsがsubmitをハンドルしている場合に干渉しないよう、遅延で実行
     document.getElementById('form').addEventListener('submit', function(e) {
-      e.preventDefault();
+      // e.preventDefault() をしない → 元のhome.jsがイベントを処理できるようにする
       const input = document.getElementById('search').value.trim();
       if (!input) return;
 
-      let targetUrl = input.trim();
-
-      // URL補完
-      if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
-        if (targetUrl.includes('.') && !targetUrl.includes(' ')) {
-          targetUrl = 'https://' + targetUrl;
+      // 補完だけ行って、元の処理に渡す
+      let url = input;
+      if (!url.startsWith('http')) {
+        if (url.includes('.') && !url.includes(' ')) {
+          url = 'https://' + url;
         } else {
-          targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(targetUrl);
+          url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
         }
+        document.getElementById('search').value = url; // 表示も更新
       }
 
-      const ifr = document.getElementById('ifr');
-
-      // UVが使える場合 → プロキシ経由
-      if (typeof __uv$config !== 'undefined' && typeof __uv$config.encodeUrl === 'function') {
-        try {
-          const encoded = __uv$config.encodeUrl(targetUrl);
-          ifr.src = __uv$config.prefix + encoded;
-          console.log('UVプロキシ経由でロード:', ifr.src);
-        } catch (err) {
-          console.error('UVプロキシエラー:', err);
-          ifr.src = targetUrl; // フォールバック
-          alert('プロキシ接続に失敗しました。直接サイトを開きます（ブロックされる可能性あり）');
+      // home.js がこのイベントを拾ってプロキシ処理をするはず
+      // もし拾わなければ、以下をコメントアウト解除でフォールバック
+      /*
+      setTimeout(() => {
+        if (typeof __uv$config !== 'undefined' && __uv$config.encodeUrl) {
+          try {
+            const encoded = __uv$config.encodeUrl(url);
+            document.getElementById('ifr').src = __uv$config.prefix + encoded;
+          } catch (err) {
+            console.error('フォールバックエラー:', err);
+          }
         }
-      } else {
-        // UV使えない場合 → 直接ロード（接続拒否を回避）
-        ifr.src = targetUrl;
-        console.warn('UVプロキシ利用不可 → 直接ロード');
-        alert('プロキシが使えないため、直接サイトを開きます。\n接続が拒否される場合はサーバー設定を確認してください。');
-      }
+      }, 100); // 少し遅延してhome.jsの処理を優先
+      */
     });
   </script>
 
