@@ -9,13 +9,15 @@
   <link rel="stylesheet" href="/assets/css/style.css" />
   <script src="https://kit.fontawesome.com/be27c0ad9d.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
-  <!-- Ultraviolet -->
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
-
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
+
+  <!-- 広告系はコメントアウト（必要なければ削除） -->
+  <!-- <script async src="//api.adinplay.com/libs/aiptag/pub/SHY/shuttleproxy.com/tag.min.js"></script> -->
+  <!-- Google tag (gtag.js) -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDSZE0VTXD"></script> -->
 
   <style>
     body {
@@ -23,7 +25,7 @@
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      background: url('https://thumbs.dreamstime.com/b/global-network-connections-digital-world-map-glowing-lines-futuristic-digital-representation-earth-s-continents-405629893.jpg') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2940') no-repeat center center fixed;
       background-size: cover;
       background-color: #000814;
       font-family: 'Poppins', sans-serif;
@@ -31,55 +33,67 @@
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 8, 20, 0.75);
+      background: rgba(0, 8, 20, 0.65);
       z-index: 1;
     }
-    #align, .alignment-container-1, .sidebar {
-      position: relative;
-      z-index: 2;
+    .alignment-container-1 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 900px;
+      text-align: center;
+      color: white;
+      z-index: 3;
+    }
+    h1 {
+      font-size: 5.5rem;
+      margin: 0 0 15px;
+      text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);
+      letter-spacing: 2px;
+    }
+    .subtitle {
+      font-size: 1.8rem;
+      margin: 0 0 50px;
+      opacity: 0.9;
     }
     form {
       display: flex;
-      justify-content: center;
-      max-width: 700px;
-      margin: 40px auto;
+      max-width: 650px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.08);
+      border-radius: 60px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
     .search {
       flex: 1;
-      padding: 16px 20px;
-      font-size: 1.2rem;
+      padding: 18px 25px;
+      font-size: 1.25rem;
       border: none;
-      border-radius: 50px 0 0 50px;
-      background: rgba(255,255,255,0.15);
+      background: transparent;
       color: white;
-      backdrop-filter: blur(8px);
     }
     .search::placeholder {
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.6);
     }
     .submit-button {
-      padding: 16px 28px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 0 50px 50px 0;
+      width: 80px;
       background: #00aaff;
+      border: none;
       color: white;
+      font-size: 1.4rem;
       cursor: pointer;
+      transition: background 0.2s;
     }
     .submit-button:hover {
       background: #0088dd;
     }
-    h1 {
-      font-size: 4.5rem;
-      margin: 0;
-      text-shadow: 0 0 25px rgba(0,180,255,0.9);
-      text-align: center;
-    }
-    p.subtitle {
-      font-size: 1.5rem;
-      text-align: center;
-      margin: 10px 0 30px;
-      color: #ddd;
+    #align, .sidebar {
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
@@ -87,15 +101,17 @@
 
   <div class="overlay"></div>
 
+  <!-- 元のsidebar（そのまま） -->
   <div class="sidebar">
     <a href="/" id="logo">
       <img src="shuttle.png" alt="Logo">
     </a>
+    <a href="/" id="logo"></a>
     <a href="/" class="nav-active"><span>Home</span></a>
     <a href="/math" class="nav-btn"><span>Games</span></a>
     <a href="/physics" class="nav-btn"><span>Apps</span></a>
     <a href="/settings" class="nav-btn"><span>Settings</span></a>
-    <a id="time" class="nav-btn" style="display:flex;justify-content:flex-end;margin-left:auto;"></a>
+    <a id="time" class="nav-btn" style="display: flex; justify-content: flex-end; margin-left: auto;"></a>
     <div>
       <input type="checkbox" class="checkbox" id="checkbox">
       <label for="checkbox" class="checkbox-label">
@@ -106,23 +122,25 @@
     </div>
   </div>
 
+  <!-- 元のalign（iframe部分） -->
   <div id="align">
     <nav id="nav">
       <a onclick="exit()">
-        <i class="fa-solid fa-xmark" style="color:white;margin-right:auto;margin-left:20px;font-size:24px;cursor:pointer;"></i>
+        <i class="fa-solid fa-xmark" style="color: white; margin-right: auto; margin-left: 20px; font-size: 24px;cursor: pointer;"></i>
       </a>
-      <span id="m" style="margin:auto;"></span>
+      <span id="m" style="margin: auto;"></span>
       <a onclick="erudaToggle()">
-        <i class="fa-solid fa-code" style="color:white;margin-left:auto;margin-right:5px;font-size:20px;cursor:pointer;"></i>
+        <i class="fa-solid fa-code" style="color: white; margin-left: auto; margin-right: 5px; font-size: 20px;cursor: pointer;"></i>
       </a>
       <a onclick="fullscreen()">
-        <i class="fa-solid fa-expand" style="color:white;margin-left:auto;margin-right:45px;font-size:20px;cursor:pointer;"></i>
+        <i class="fa-solid fa-expand" style="color: white; margin-left: auto; margin-right: 45px; font-size: 20px;cursor: pointer;"></i>
       </a>
     </nav>
-    <iframe id="ifr" style="width:100%;height:100%;border:none;"></iframe>
+    <iframe id="ifr" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 
-  <div class="alignment-container-1" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:800px;text-align:center;color:white;">
+  <!-- ホーム画面（画像通りに改造） -->
+  <div class="alignment-container-1">
     <h1>Science</h1>
     <p class="subtitle">Advanced Network & Proxy Browser</p>
 
@@ -134,57 +152,40 @@
     </form>
 
     <div id="suggestions"></div>
-    <footer style="margin-top:60px;">
-      <a href="https://discord.gg/xi">Discord</a> |
-      <a href="https://github.com/shuttlenetwork/shuttle">Github</a>
-    </footer>
   </div>
 
-  <!-- 検索処理（エラー対策最大限） -->
+  <!-- 元のスクリプト（home.jsなど） -->
+  <script src="/assets/js/home.js"></script>
+  <script src="/assets/js/proxy.js" defer></script>
+
+  <!-- 検索機能（エラー対策版） -->
   <script>
-    window.addEventListener('load', () => {
-      const form = document.getElementById('form');
-      const ifr = document.getElementById('ifr');
+    document.getElementById('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const input = document.getElementById('search').value.trim();
+      if (!input) return;
 
-      // UVが使えるかチェック
-      const uvReady = typeof __uv$config !== 'undefined' && 
-                      __uv$config.prefix && 
-                      typeof __uv$config.encodeUrl === 'function';
-
-      if (!uvReady) {
-        console.warn('UVプロキシが利用できません。直接URLをロードします（ブロック回避不可）');
-        alert('プロキシ設定が見つかりません。\n\n・サーバー管理者へ確認してください\n・またはUVなしで直接開きます（制限がかかる可能性あり）');
+      let url = input;
+      if (!url.startsWith('http')) {
+        if (url.includes('.') && !url.includes(' ')) {
+          url = 'https://' + url;
+        } else {
+          url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+        }
       }
 
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        let input = document.getElementById('search').value.trim();
-        if (!input) return;
-
-        let url = input;
-
-        if (!url.startsWith('http')) {
-          if (url.includes('.') && !url.includes(' ')) {
-            url = 'https://' + url;
-          } else {
-            url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
-          }
-        }
-
-        if (uvReady) {
-          try {
-            const encoded = __uv$config.encodeUrl(url);
-            const proxied = __uv$config.prefix + encoded;
-            ifr.src = proxied;
-            console.log('UV経由でロード:', proxied);
-          } catch (err) {
-            console.error('UVエラー:', err);
-            ifr.src = url; // フォールバック
-          }
+      try {
+        if (typeof __uv$config !== 'undefined' && __uv$config.encodeUrl) {
+          const encoded = __uv$config.encodeUrl(url);
+          document.getElementById('ifr').src = __uv$config.prefix + encoded;
         } else {
-          ifr.src = url; // UV使えない場合の直接ロード
+          document.getElementById('ifr').src = url;
+          console.warn('UVプロキシ使用不可 → 直接ロード');
         }
-      });
+      } catch (err) {
+        console.error('エラー:', err);
+        document.getElementById('ifr').src = url; // フォールバック
+      }
     });
   </script>
 
