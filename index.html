@@ -25,7 +25,7 @@
   </script>
   <script type="text/javascript" src="//imaginaryspooky.com/96/ed/2d/96ed2d5997f3d104c6968d954e833ee8.js" defer></script>
 
-  <!-- 背景を画像通りに -->
+  <!-- 背景（地図がしっかり入ったバージョン） -->
   <style>
     body {
       margin: 0;
@@ -57,6 +57,7 @@
       font-size: 5.5rem;
       margin: 0 0 15px;
       text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);
+      letter-spacing: 2px;
     }
     .subtitle {
       font-size: 1.8rem;
@@ -94,10 +95,6 @@
     }
     .submit-button:hover {
       background: #0088dd;
-    }
-    #align, .sidebar {
-      position: relative;
-      z-index: 2;
     }
   </style>
 </head>
@@ -142,7 +139,7 @@
         <i class="fa-solid fa-expand" style="color: white; margin-left: auto; margin-right: 45px; font-size: 20px;cursor: pointer;"></i>
       </a>
     </nav>
-    <iframe id="ifr"></iframe>
+    <iframe id="ifr" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 
   <div class="alignment-container-1">
@@ -154,7 +151,7 @@
     <p class="subtitle">Advanced Network & Proxy Browser</p>
 
     <form id="form">
-      <input autofocus autocomplete="off" class="search" id="search" placeholder="URL または 検索ワードを入力" required />
+      <input autofocus autocomplete="off" class="search" id="search" placeholder="URL Or Search" required />
       <button type="submit" class="submit-button">
         <i class="fas fa-search searchicon"></i>
       </button>
@@ -174,16 +171,15 @@
 
   <script src="/assets/js/home.js"></script>
 
-  <!-- 検索が動かない対策: 元の処理を妨げない補完だけ -->
+  <!-- 検索ボタンを押したら元のプロキシで飛ぶように（home.jsに完全に任せる） -->
   <script>
     document.getElementById('form').addEventListener('submit', function(e) {
-      // preventDefault() をしない → home.js が元のプロキシ処理をする
+      // preventDefault() をしない → home.js がイベントを処理してプロキシで飛ばす
       const input = document.getElementById('search').value.trim();
       if (!input) return;
 
+      // 最小限の補完だけして、home.jsに渡す
       let url = input.trim();
-
-      // 補完だけ行う（元のhome.jsに渡す）
       if (!url.startsWith('http://') && !url.startsWith('https://')) {
         if (url.includes('.') && !url.includes(' ')) {
           url = 'https://' + url;
@@ -193,8 +189,8 @@
         document.getElementById('search').value = url;
       }
 
-      console.log('Shuttleプロキシに処理を渡します:', url);
-      // home.js がここからイベントを拾ってiframeにロードするはず
+      // home.js がここからプロキシ処理をして iframe にロードするはず
+      console.log('Shuttle Proxy処理に渡します:', url);
     });
   </script>
 
