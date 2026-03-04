@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
   <meta name="theme-color" content="#000000" />
   <meta name="language" content="English" />
-  <title>Science</title>
+  <title>Science</title>  <!-- ここだけタイトル変更（Scienceに） -->
 
   <link rel="stylesheet" href="/assets/css/style.css" />
   <script src="https://kit.fontawesome.com/be27c0ad9d.js" crossorigin="anonymous"></script>
@@ -14,7 +14,6 @@
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
 
-  <!-- 広告・トラッキングはそのまま -->
   <script async src="//api.adinplay.com/libs/aiptag/pub/SHY/shuttleproxy.com/tag.min.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDSZE0VTXD"></script>
   <script>
@@ -24,87 +23,9 @@
     gtag('config', 'G-QDSZE0VTXD');
   </script>
   <script type="text/javascript" src="//imaginaryspooky.com/96/ed/2d/96ed2d5997f3d104c6968d954e833ee8.js" defer></script>
-
-  <!-- 背景を画像通りに（地図入りネットワーク） -->
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden;
-      background: url('https://thumbs.dreamstime.com/b/global-world-map-network-digital-earth-connection-futuristic-technology-background-communication-web-illustration-glowing-blue-402610835.jpg') no-repeat center center fixed;
-      background-size: cover;
-      background-color: #000814;
-    }
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 8, 20, 0.55);
-      z-index: 1;
-    }
-    .alignment-container-1 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      max-width: 900px;
-      text-align: center;
-      color: white;
-      z-index: 3;
-    }
-    .header-container h1 {
-      font-size: 5.5rem;
-      margin: 0 0 15px;
-      text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);
-      letter-spacing: 2px;
-    }
-    .subtitle {
-      font-size: 1.8rem;
-      margin: 0 0 50px;
-      opacity: 0.9;
-    }
-    form {
-      display: flex;
-      max-width: 650px;
-      margin: 0 auto;
-      background: rgba(255,255,255,0.08);
-      border-radius: 60px;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    }
-    .search {
-      flex: 1;
-      padding: 18px 25px;
-      font-size: 1.25rem;
-      border: none;
-      background: transparent;
-      color: white;
-    }
-    .search::placeholder {
-      color: rgba(255,255,255,0.6);
-    }
-    .submit-button {
-      width: 80px;
-      background: #00aaff;
-      border: none;
-      color: white;
-      font-size: 1.4rem;
-      cursor: pointer;
-    }
-    .submit-button:hover {
-      background: #0088dd;
-    }
-    #align, .sidebar {
-      position: relative;
-      z-index: 2;
-    }
-  </style>
 </head>
 <body>
-
-  <div class="overlay"></div>
+  <div id="videoad"></div>
 
   <div class="sidebar">
     <a href="/" id="logo">
@@ -146,27 +67,23 @@
     <iframe id="ifr" style="width:100%; height:100%; border:none;"></iframe>
   </div>
 
-  <div class="alignment-container-1">
+  <div class="alignment-container-1" style="margin-top:15%;">
     <div class="header-container">
       <div class="logo-image">
         <h1 style="color: white; font-family: 'Poppins', sans-serif; text-align: center;">Science</h1>
       </div>
     </div>
-    <p class="subtitle">Advanced Network & Proxy Browser</p>
-
+    <div class="header-container"></div>
     <form id="form">
       <input autofocus autocomplete="off" class="search" id="search" placeholder="URL Or Search" required />
       <button type="submit" class="submit-button">
         <i class="fas fa-search searchicon"></i>
       </button>
     </form>
-
     <div id="suggestions"></div>
-
     <div style="margin-top: 50px; z-index: 1;">
       <div class="ad-container"></div>
     </div>
-
     <footer>
       <a title="discord" href="https://discord.gg/xi">Discord</a>
       <a title="github" href="https://github.com/shuttlenetwork/shuttle">Github</a>
@@ -174,28 +91,8 @@
   </div>
 
   <script src="/assets/js/home.js"></script>
-
-  <!-- 検索ボタンを押したら元のプロキシでサイトに飛ぶ（home.jsに任せる） -->
   <script>
-    document.getElementById('form').addEventListener('submit', function(e) {
-      // preventDefault() をしない → home.js がイベントを処理して iframe にロード
-      const input = document.getElementById('search').value.trim();
-      if (!input) return;
-
-      // 補完だけ行い、home.js に渡す
-      let url = input.trim();
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        if (url.includes('.') && !url.includes(' ')) {
-          url = 'https://' + url;
-        } else {
-          url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
-        }
-        document.getElementById('search').value = url;
-      }
-
-      // home.js がここからプロキシ処理をしてサイトに飛ぶ
-      console.log('Shuttle Proxy処理開始:', url);
-    });
+    //window.addEventListener("load", () => abc());
   </script>
 
   <!-- Cloudflare関連はそのまま -->
