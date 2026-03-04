@@ -14,25 +14,21 @@
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
 
-  <!-- 広告系はコメントアウト（必要なければ削除） -->
-  <!-- <script async src="//api.adinplay.com/libs/aiptag/pub/SHY/shuttleproxy.com/tag.min.js"></script> -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDSZE0VTXD"></script> -->
-
   <style>
     body {
       margin: 0;
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      background: url('https://thumbs.dreamstime.com/b/global-network-connections-digital-world-map-glowing-lines-futuristic-digital-representation-earth-s-continents-405629893.jpg') no-repeat center center fixed;
+      background: url('https://static.vecteezy.com/system/resources/previews/056/428/173/large_2x/glowing-world-map-futuristic-global-network-design-for-digital-media-photo.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-color: #000814;
+      background-color: #000814; /* フォールバック */
       font-family: 'Poppins', sans-serif;
     }
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 8, 20, 0.65);
+      background: rgba(0, 8, 20, 0.65); /* 文字が見やすい暗さ */
       z-index: 1;
     }
     .alignment-container-1 {
@@ -90,6 +86,10 @@
     .submit-button:hover {
       background: #0088dd;
     }
+    #align, .sidebar {
+      position: relative;
+      z-index: 2;
+    }
   </style>
 </head>
 <body>
@@ -100,7 +100,6 @@
     <a href="/" id="logo">
       <img src="shuttle.png" alt="Logo">
     </a>
-    <a href="/" id="logo"></a>
     <a href="/" class="nav-active"><span>Home</span></a>
     <a href="/math" class="nav-btn"><span>Games</span></a>
     <a href="/physics" class="nav-btn"><span>Apps</span></a>
@@ -154,16 +153,13 @@
   <script src="/assets/js/home.js"></script>
   <script src="/assets/js/proxy.js" defer></script>
 
-  <!-- 検索ボタン押下後 → 元のShuttleプロキシに任せる -->
   <script>
     document.getElementById('form').addEventListener('submit', function(e) {
       e.preventDefault();
       const input = document.getElementById('search').value.trim();
       if (!input) return;
 
-      let url = input.trim();
-
-      // 簡易チェック（元のhome.jsに任せる前に補完）
+      let url = input;
       if (!url.startsWith('http')) {
         if (url.includes('.') && !url.includes(' ')) {
           url = 'https://' + url;
@@ -172,18 +168,15 @@
         }
       }
 
-      // 元のShuttleプロキシ処理に渡す（home.js / proxy.js がここから引き継ぐ想定）
-      // UVエンコードしてiframeにセット
       if (typeof __uv$config !== 'undefined' && __uv$config.encodeUrl) {
         try {
           const encoded = __uv$config.encodeUrl(url);
           document.getElementById('ifr').src = __uv$config.prefix + encoded;
         } catch (err) {
           console.error('UV error:', err);
-          document.getElementById('ifr').src = url; // フォールバック
+          document.getElementById('ifr').src = url;
         }
       } else {
-        // UV使えない場合のフォールバック
         document.getElementById('ifr').src = url;
       }
     });
