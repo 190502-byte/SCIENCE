@@ -9,21 +9,16 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       color: white;
+      background: #0a0e1a;
+      overflow: hidden;
     }
     .bg {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: url('YOUR_BACKGROUND_IMAGE_URL_OR_LOCAL_PATH_HERE') center/cover no-repeat;
-      z-index: -2;
-    }
-    .overlay {
-      position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5); /* 文字が見える程度の暗さ。0.3〜0.6で調整 */
-      z-index: -1;
+      background: url('bg.jpg') center/cover no-repeat;  /* ← 君のネットワーク地球画像をここに（ファイル名変えてもOK） */
+      z-index: -2;
     }
     .container {
       position: relative;
@@ -31,60 +26,64 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       text-align: center;
       padding: 20px;
     }
     h1 {
-      font-size: 6rem;
-      margin: 0 0 1rem;
-      text-shadow: 0 0 30px rgba(0,0,0,0.9);
-      letter-spacing: 3px;
+      font-size: 5.5rem;
+      font-weight: 700;
+      margin: 0 0 0.8rem;
+      letter-spacing: 1px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
     }
-    p {
-      font-size: 1.6rem;
-      margin: 0 0 4rem;
+    .subtitle {
+      font-size: 1.4rem;
       opacity: 0.9;
-      text-shadow: 0 2px 10px black;
+      margin: 0 0 5rem;
+      max-width: 600px;
     }
-    .input-wrap {
+    .search-bar {
       position: relative;
       width: 100%;
-      max-width: 700px;
+      max-width: 620px;
     }
     input {
       width: 100%;
-      padding: 18px 25px;
-      font-size: 1.4rem;
+      padding: 16px 24px 16px 24px;
+      font-size: 1.15rem;
       border: none;
-      border-radius: 50px;
-      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      background: rgba(60, 60, 70, 0.85);  /* 灰色っぽい半透明 */
       color: white;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
       outline: none;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
     input::placeholder {
-      color: rgba(255,255,255,0.6);
+      color: rgba(220, 220, 230, 0.7);
     }
     button {
       position: absolute;
-      right: 10px;
+      right: 6px;
       top: 50%;
       transform: translateY(-50%);
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       border: none;
-      background: #006aff;
+      background: #0066ff;
       color: white;
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       cursor: pointer;
-      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
     }
     button:hover {
-      background: #0055cc;
+      background: #0055dd;
     }
     iframe {
       position: fixed;
@@ -94,78 +93,77 @@
       border: none;
       display: none;
       z-index: 10;
-      background: #000;
+      background: white;
     }
     .close {
       position: fixed;
       top: 20px;
       right: 30px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.6);
       color: white;
-      font-size: 2rem;
       border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.8rem;
       cursor: pointer;
       display: none;
       z-index: 11;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(6px);
     }
   </style>
 </head>
 <body>
 
   <div class="bg"></div>
-  <div class="overlay"></div>
 
   <div class="container">
     <h1>Science</h1>
-    <p>Advanced Network & Proxy Browser</p>
+    <div class="subtitle">Advanced Network & Proxy Browser</div>
 
-    <div class="input-wrap">
+    <div class="search-bar">
       <input type="text" id="input" placeholder="URL または 検索ワードを入力" autofocus>
-      <button onclick="openProxy()">→</button>
+      <button onclick="load()">→</button>
     </div>
   </div>
 
-  <iframe id="proxy"></iframe>
-  <button class="close" onclick="closeProxy()">×</button>
+  <iframe id="frame"></iframe>
+  <button class="close" onclick="closeFrame()">×</button>
 
   <script>
     const input = document.getElementById('input');
-    const iframe = document.getElementById('proxy');
+    const frame = document.getElementById('frame');
     const closeBtn = document.querySelector('.close');
 
-    function openProxy() {
+    function load() {
       let val = input.value.trim();
       if (!val) return;
 
-      if (!val.match(/^https?:\/\//)) {
-        if (val.includes('.') && !val.includes(' ')) {
+      if (!/^https?:\/\//i.test(val)) {
+        if (val.includes('.') && !/\s/.test(val)) {
           val = 'https://' + val;
         } else {
           val = 'https://www.google.com/search?q=' + encodeURIComponent(val);
         }
       }
 
-      iframe.src = val;
-      iframe.style.display = 'block';
+      frame.src = val;
+      frame.style.display = 'block';
       closeBtn.style.display = 'block';
       document.querySelector('.container').style.display = 'none';
     }
 
-    function closeProxy() {
-      iframe.src = '';
-      iframe.style.display = 'none';
+    function closeFrame() {
+      frame.src = 'about:blank';
+      frame.style.display = 'none';
       closeBtn.style.display = 'none';
       document.querySelector('.container').style.display = 'flex';
       input.value = '';
       input.focus();
     }
 
-    input.addEventListener('keypress', e => {
-      if (e.key === 'Enter') openProxy();
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') load();
     });
   </script>
 
