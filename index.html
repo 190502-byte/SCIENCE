@@ -9,8 +9,11 @@
   <link rel="stylesheet" href="/assets/css/style.css" />
   <script src="https://kit.fontawesome.com/be27c0ad9d.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <!-- Ultraviolet -->
   <script src="/uv/uv.bundle.js"></script>
   <script src="/uv/uv.config.js"></script>
+
   <script src="/assets/js/index.js" defer></script>
   <script src="/assets/js/particles.js" defer></script>
 
@@ -20,7 +23,7 @@
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      background: url('https://static.vecteezy.com/system/resources/previews/056/428/173/large_2x/glowing-world-map-futuristic-global-network-design-for-digital-media-photo.jpg') no-repeat center center fixed;
+      background: url('https://thumbs.dreamstime.com/b/global-network-connections-digital-world-map-glowing-lines-futuristic-digital-representation-earth-s-continents-405629893.jpg') no-repeat center center fixed;
       background-size: cover;
       background-color: #000814;
       font-family: 'Poppins', sans-serif;
@@ -28,66 +31,55 @@
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 8, 20, 0.55);
+      background: rgba(0, 8, 20, 0.75);
       z-index: 1;
     }
-    .alignment-container-1 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      max-width: 900px;
-      text-align: center;
-      color: white;
-      z-index: 3;
-    }
-    h1 {
-      font-size: 5.5rem;
-      margin: 0 0 15px;
-      text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);
-    }
-    .subtitle {
-      font-size: 1.8rem;
-      margin: 0 0 50px;
-      opacity: 0.9;
+    #align, .alignment-container-1, .sidebar {
+      position: relative;
+      z-index: 2;
     }
     form {
       display: flex;
-      max-width: 650px;
-      margin: 0 auto;
-      background: rgba(255,255,255,0.08);
-      border-radius: 60px;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      justify-content: center;
+      max-width: 700px;
+      margin: 40px auto;
     }
     .search {
       flex: 1;
-      padding: 18px 25px;
-      font-size: 1.25rem;
+      padding: 16px 20px;
+      font-size: 1.2rem;
       border: none;
-      background: transparent;
+      border-radius: 50px 0 0 50px;
+      background: rgba(255,255,255,0.15);
       color: white;
+      backdrop-filter: blur(8px);
     }
     .search::placeholder {
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.7);
     }
     .submit-button {
-      width: 80px;
-      background: #00aaff;
+      padding: 16px 28px;
+      font-size: 1.2rem;
       border: none;
+      border-radius: 0 50px 50px 0;
+      background: #00aaff;
       color: white;
-      font-size: 1.4rem;
       cursor: pointer;
-      transition: background 0.2s;
     }
     .submit-button:hover {
       background: #0088dd;
     }
-    #align, .sidebar {
-      position: relative;
-      z-index: 2;
+    h1 {
+      font-size: 4.5rem;
+      margin: 0;
+      text-shadow: 0 0 25px rgba(0,180,255,0.9);
+      text-align: center;
+    }
+    p.subtitle {
+      font-size: 1.5rem;
+      text-align: center;
+      margin: 10px 0 30px;
+      color: #ddd;
     }
   </style>
 </head>
@@ -99,7 +91,6 @@
     <a href="/" id="logo">
       <img src="shuttle.png" alt="Logo">
     </a>
-    <a href="/" id="logo"></a>
     <a href="/" class="nav-active"><span>Home</span></a>
     <a href="/math" class="nav-btn"><span>Games</span></a>
     <a href="/physics" class="nav-btn"><span>Apps</span></a>
@@ -131,7 +122,7 @@
     <iframe id="ifr" style="width:100%;height:100%;border:none;"></iframe>
   </div>
 
-  <div class="alignment-container-1">
+  <div class="alignment-container-1" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:800px;text-align:center;color:white;">
     <h1>Science</h1>
     <p class="subtitle">Advanced Network & Proxy Browser</p>
 
@@ -143,38 +134,57 @@
     </form>
 
     <div id="suggestions"></div>
-
     <footer style="margin-top:60px;">
-      <a title="discord" href="https://discord.gg/xi">Discord</a> |
-      <a title="github" href="https://github.com/shuttlenetwork/shuttle">Github</a>
+      <a href="https://discord.gg/xi">Discord</a> |
+      <a href="https://github.com/shuttlenetwork/shuttle">Github</a>
     </footer>
   </div>
 
-  <!-- 元のShuttleプロキシスクリプト（これでプロキシ性能を完全に維持） -->
-  <script src="/assets/js/home.js"></script>
-  <script src="/assets/js/proxy.js" defer></script>
-
-  <!-- 入力補完だけ軽く行い、元のプロキシ処理に完全に任せる -->
+  <!-- 検索処理（エラー対策最大限） -->
   <script>
-    document.getElementById('form').addEventListener('submit', function(e) {
-      // preventDefault() をしない → home.js がイベントを処理できる
-      const input = document.getElementById('search').value.trim();
-      if (!input) return;
+    window.addEventListener('load', () => {
+      const form = document.getElementById('form');
+      const ifr = document.getElementById('ifr');
 
-      let url = input.trim();
+      // UVが使えるかチェック
+      const uvReady = typeof __uv$config !== 'undefined' && 
+                      __uv$config.prefix && 
+                      typeof __uv$config.encodeUrl === 'function';
 
-      // 簡易補完（元の処理を邪魔しない範囲で）
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        if (url.includes('.') && !url.includes(' ')) {
-          url = 'https://' + url;
-        } else {
-          url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
-        }
-        document.getElementById('search').value = url; // 入力欄を更新
+      if (!uvReady) {
+        console.warn('UVプロキシが利用できません。直接URLをロードします（ブロック回避不可）');
+        alert('プロキシ設定が見つかりません。\n\n・サーバー管理者へ確認してください\n・またはUVなしで直接開きます（制限がかかる可能性あり）');
       }
 
-      // home.js がここからプロキシ処理を引き継ぐ（シャトルの性能がそのまま生きる）
-      console.log('Shuttleプロキシに処理を渡します:', url);
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let input = document.getElementById('search').value.trim();
+        if (!input) return;
+
+        let url = input;
+
+        if (!url.startsWith('http')) {
+          if (url.includes('.') && !url.includes(' ')) {
+            url = 'https://' + url;
+          } else {
+            url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+          }
+        }
+
+        if (uvReady) {
+          try {
+            const encoded = __uv$config.encodeUrl(url);
+            const proxied = __uv$config.prefix + encoded;
+            ifr.src = proxied;
+            console.log('UV経由でロード:', proxied);
+          } catch (err) {
+            console.error('UVエラー:', err);
+            ifr.src = url; // フォールバック
+          }
+        } else {
+          ifr.src = url; // UV使えない場合の直接ロード
+        }
+      });
     });
   </script>
 
