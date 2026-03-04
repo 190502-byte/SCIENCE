@@ -24,7 +24,7 @@
   </script>
   <script type="text/javascript" src="//imaginaryspooky.com/96/ed/2d/96ed2d5997f3d104c6968d954e833ee8.js" defer></script>
 
-  <!-- 背景を指定画像に合わせた調整 -->
+  <!-- 背景をあなたの画像に完全に合わせた調整 -->
   <style>
     body {
       margin: 0;
@@ -33,12 +33,13 @@
       overflow: hidden;
       background: url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2940') no-repeat center center fixed;
       background-size: cover;
+      background-position: center;
       background-color: #000814;
     }
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 20, 0.65);
+      background: rgba(0, 0, 30, 0.65); /* 画像の暗い雰囲気とマッチするオーバーレイ */
       z-index: 1;
     }
     .alignment-container-1 {
@@ -94,6 +95,10 @@
     }
     .submit-button:hover {
       background: #0088dd;
+    }
+    #align, .sidebar {
+      position: relative;
+      z-index: 2;
     }
   </style>
 </head>
@@ -173,7 +178,7 @@
     //window.addEventListener("load", () => abc());
   </script>
 
-  <!-- 元のCloudflare関連はそのまま -->
+  <!-- Cloudflare関連はそのまま -->
   <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d6c75b6e9f826cc',t:'MTc3MjU4MDk0OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"c59f5993b77d46efa744d9cba8626f5d","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
