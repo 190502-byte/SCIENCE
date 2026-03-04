@@ -16,7 +16,6 @@
 
   <!-- 広告系はコメントアウト（必要なければ削除） -->
   <!-- <script async src="//api.adinplay.com/libs/aiptag/pub/SHY/shuttleproxy.com/tag.min.js"></script> -->
-  <!-- Google tag (gtag.js) -->
   <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-QDSZE0VTXD"></script> -->
 
   <style>
@@ -25,7 +24,7 @@
       padding: 0;
       height: 100vh;
       overflow: hidden;
-      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&q=80&w=2940') no-repeat center center fixed;
+      background: url('https://thumbs.dreamstime.com/b/global-network-connections-digital-world-map-glowing-lines-futuristic-digital-representation-earth-s-continents-405629893.jpg') no-repeat center center fixed;
       background-size: cover;
       background-color: #000814;
       font-family: 'Poppins', sans-serif;
@@ -91,17 +90,12 @@
     .submit-button:hover {
       background: #0088dd;
     }
-    #align, .sidebar {
-      position: relative;
-      z-index: 2;
-    }
   </style>
 </head>
 <body>
 
   <div class="overlay"></div>
 
-  <!-- 元のsidebar（そのまま） -->
   <div class="sidebar">
     <a href="/" id="logo">
       <img src="shuttle.png" alt="Logo">
@@ -111,7 +105,7 @@
     <a href="/math" class="nav-btn"><span>Games</span></a>
     <a href="/physics" class="nav-btn"><span>Apps</span></a>
     <a href="/settings" class="nav-btn"><span>Settings</span></a>
-    <a id="time" class="nav-btn" style="display: flex; justify-content: flex-end; margin-left: auto;"></a>
+    <a id="time" class="nav-btn" style="display:flex;justify-content:flex-end;margin-left:auto;"></a>
     <div>
       <input type="checkbox" class="checkbox" id="checkbox">
       <label for="checkbox" class="checkbox-label">
@@ -122,24 +116,22 @@
     </div>
   </div>
 
-  <!-- 元のalign（iframe部分） -->
   <div id="align">
     <nav id="nav">
       <a onclick="exit()">
-        <i class="fa-solid fa-xmark" style="color: white; margin-right: auto; margin-left: 20px; font-size: 24px;cursor: pointer;"></i>
+        <i class="fa-solid fa-xmark" style="color:white;margin-right:auto;margin-left:20px;font-size:24px;cursor:pointer;"></i>
       </a>
-      <span id="m" style="margin: auto;"></span>
+      <span id="m" style="margin:auto;"></span>
       <a onclick="erudaToggle()">
-        <i class="fa-solid fa-code" style="color: white; margin-left: auto; margin-right: 5px; font-size: 20px;cursor: pointer;"></i>
+        <i class="fa-solid fa-code" style="color:white;margin-left:auto;margin-right:5px;font-size:20px;cursor:pointer;"></i>
       </a>
       <a onclick="fullscreen()">
-        <i class="fa-solid fa-expand" style="color: white; margin-left: auto; margin-right: 45px; font-size: 20px;cursor: pointer;"></i>
+        <i class="fa-solid fa-expand" style="color:white;margin-left:auto;margin-right:45px;font-size:20px;cursor:pointer;"></i>
       </a>
     </nav>
-    <iframe id="ifr" style="width:100%; height:100%; border:none;"></iframe>
+    <iframe id="ifr" style="width:100%;height:100%;border:none;"></iframe>
   </div>
 
-  <!-- ホーム画面（画像通りに改造） -->
   <div class="alignment-container-1">
     <h1>Science</h1>
     <p class="subtitle">Advanced Network & Proxy Browser</p>
@@ -152,20 +144,26 @@
     </form>
 
     <div id="suggestions"></div>
+
+    <footer style="margin-top:60px;">
+      <a title="discord" href="https://discord.gg/xi">Discord</a> |
+      <a title="github" href="https://github.com/shuttlenetwork/shuttle">Github</a>
+    </footer>
   </div>
 
-  <!-- 元のスクリプト（home.jsなど） -->
   <script src="/assets/js/home.js"></script>
   <script src="/assets/js/proxy.js" defer></script>
 
-  <!-- 検索機能（エラー対策版） -->
+  <!-- 検索ボタン押下後 → 元のShuttleプロキシに任せる -->
   <script>
     document.getElementById('form').addEventListener('submit', function(e) {
       e.preventDefault();
       const input = document.getElementById('search').value.trim();
       if (!input) return;
 
-      let url = input;
+      let url = input.trim();
+
+      // 簡易チェック（元のhome.jsに任せる前に補完）
       if (!url.startsWith('http')) {
         if (url.includes('.') && !url.includes(' ')) {
           url = 'https://' + url;
@@ -174,17 +172,19 @@
         }
       }
 
-      try {
-        if (typeof __uv$config !== 'undefined' && __uv$config.encodeUrl) {
+      // 元のShuttleプロキシ処理に渡す（home.js / proxy.js がここから引き継ぐ想定）
+      // UVエンコードしてiframeにセット
+      if (typeof __uv$config !== 'undefined' && __uv$config.encodeUrl) {
+        try {
           const encoded = __uv$config.encodeUrl(url);
           document.getElementById('ifr').src = __uv$config.prefix + encoded;
-        } else {
-          document.getElementById('ifr').src = url;
-          console.warn('UVプロキシ使用不可 → 直接ロード');
+        } catch (err) {
+          console.error('UV error:', err);
+          document.getElementById('ifr').src = url; // フォールバック
         }
-      } catch (err) {
-        console.error('エラー:', err);
-        document.getElementById('ifr').src = url; // フォールバック
+      } else {
+        // UV使えない場合のフォールバック
+        document.getElementById('ifr').src = url;
       }
     });
   </script>
