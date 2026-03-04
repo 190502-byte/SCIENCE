@@ -22,13 +22,13 @@
       overflow: hidden;
       background: url('https://static.vecteezy.com/system/resources/previews/056/428/173/large_2x/glowing-world-map-futuristic-global-network-design-for-digital-media-photo.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-color: #000814; /* フォールバック */
+      background-color: #000814;
       font-family: 'Poppins', sans-serif;
     }
     .overlay {
       position: absolute;
       inset: 0;
-      background: rgba(0, 8, 20, 0.65); /* 文字が見やすい暗さ */
+      background: rgba(0, 8, 20, 0.65);
       z-index: 1;
     }
     .alignment-container-1 {
@@ -46,7 +46,6 @@
       font-size: 5.5rem;
       margin: 0 0 15px;
       text-shadow: 0 0 30px rgba(0, 180, 255, 0.9);
-      letter-spacing: 2px;
     }
     .subtitle {
       font-size: 1.8rem;
@@ -86,10 +85,6 @@
     .submit-button:hover {
       background: #0088dd;
     }
-    #align, .sidebar {
-      position: relative;
-      z-index: 2;
-    }
   </style>
 </head>
 <body>
@@ -100,6 +95,7 @@
     <a href="/" id="logo">
       <img src="shuttle.png" alt="Logo">
     </a>
+    <a href="/" id="logo"></a>
     <a href="/" class="nav-active"><span>Home</span></a>
     <a href="/math" class="nav-btn"><span>Games</span></a>
     <a href="/physics" class="nav-btn"><span>Apps</span></a>
@@ -153,31 +149,42 @@
   <script src="/assets/js/home.js"></script>
   <script src="/assets/js/proxy.js" defer></script>
 
+  <!-- 接続拒否対策強化版: UVダメなら直接ロード -->
   <script>
     document.getElementById('form').addEventListener('submit', function(e) {
       e.preventDefault();
       const input = document.getElementById('search').value.trim();
       if (!input) return;
 
-      let url = input;
-      if (!url.startsWith('http')) {
-        if (url.includes('.') && !url.includes(' ')) {
-          url = 'https://' + url;
+      let targetUrl = input.trim();
+
+      // URL補完
+      if (!targetUrl.startsWith('http://') && !targetUrl.startsWith('https://')) {
+        if (targetUrl.includes('.') && !targetUrl.includes(' ')) {
+          targetUrl = 'https://' + targetUrl;
         } else {
-          url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+          targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(targetUrl);
         }
       }
 
-      if (typeof __uv$config !== 'undefined' && __uv$config.encodeUrl) {
+      const ifr = document.getElementById('ifr');
+
+      // UVが使える場合 → プロキシ経由
+      if (typeof __uv$config !== 'undefined' && typeof __uv$config.encodeUrl === 'function') {
         try {
-          const encoded = __uv$config.encodeUrl(url);
-          document.getElementById('ifr').src = __uv$config.prefix + encoded;
+          const encoded = __uv$config.encodeUrl(targetUrl);
+          ifr.src = __uv$config.prefix + encoded;
+          console.log('UVプロキシ経由でロード:', ifr.src);
         } catch (err) {
-          console.error('UV error:', err);
-          document.getElementById('ifr').src = url;
+          console.error('UVプロキシエラー:', err);
+          ifr.src = targetUrl; // フォールバック
+          alert('プロキシ接続に失敗しました。直接サイトを開きます（ブロックされる可能性あり）');
         }
       } else {
-        document.getElementById('ifr').src = url;
+        // UV使えない場合 → 直接ロード（接続拒否を回避）
+        ifr.src = targetUrl;
+        console.warn('UVプロキシ利用不可 → 直接ロード');
+        alert('プロキシが使えないため、直接サイトを開きます。\n接続が拒否される場合はサーバー設定を確認してください。');
       }
     });
   </script>
