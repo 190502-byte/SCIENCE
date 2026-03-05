@@ -4,129 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Science - Advanced Network & Proxy Browser</title>
+  <!-- Daydream Xのメタ/スクリプトを一部取り込み -->
+  <meta name="description" content="Your favorite Browser in a browser - Powered by Science & DayDream X">
+  <meta name="keywords" content="Science, Proxy Browser, Daydream X, Advanced Network">
+  <link rel="icon" type="image/x-icon" href="/res/logo.png"> <!-- 好みで変更 -->
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body, html {
-      height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #fff;
-      background: #000;
-      overflow: hidden;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body, html { height:100%; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; color:#fff; background:#000; overflow:hidden; }
     .background {
-      position: fixed;
-      inset: 0;
-      background: 
-        url('https://thumbs.dreamstime.com/b/global-network-connection-map-glowing-nodes-futuristic-world-interconnected-purple-blue-digital-lines-dots-dark-cosmic-438232061.jpg') 
-        center/cover no-repeat;
+      position:fixed; inset:0;
+      background: url('https://thumbs.dreamstime.com/b/global-network-connection-map-glowing-nodes-futuristic-world-interconnected-purple-blue-digital-lines-dots-dark-cosmic-438232061.jpg') center/cover no-repeat;
       filter: brightness(0.45) contrast(1.3) saturate(1.1);
-      z-index: 1;
+      z-index:1;
     }
     .overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at 20% 80%, rgba(0, 80, 180, 0.18), transparent 50%);
-      z-index: 2;
+      position:fixed; inset:0;
+      background: radial-gradient(circle at 20% 80%, rgba(0,80,180,0.18), transparent 50%);
+      z-index:2;
     }
     .content {
-      position: relative;
-      z-index: 10;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
+      position:relative; z-index:10; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px;
     }
     h1 {
-      font-size: clamp(5rem, 18vw, 14rem);
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      background: linear-gradient(90deg, #00b4ff, #7c00ff, #ff00aa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.2em;
-      text-shadow: 0 0 40px rgba(0,180,255,0.6);
+      font-size: clamp(5rem,18vw,14rem); font-weight:900; letter-spacing:-0.05em;
+      background: linear-gradient(90deg, #00b4ff, #7c00ff, #ff00aa); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      margin-bottom:0.2em; text-shadow:0 0 40px rgba(0,180,255,0.6);
     }
-    .subtitle {
-      font-size: clamp(1.4rem, 5vw, 2.8rem);
-      font-weight: 300;
-      opacity: 0.9;
-      margin-bottom: 3rem;
-      letter-spacing: 0.05em;
-    }
-    .search-container {
-      position: relative;
-      width: 100%;
-      max-width: 720px;
-    }
+    .subtitle { font-size:clamp(1.4rem,5vw,2.8rem); font-weight:300; opacity:0.9; margin-bottom:3rem; letter-spacing:0.05em; }
+    .search-container { position:relative; width:100%; max-width:720px; }
     input[type="text"] {
-      width: 100%;
-      padding: 18px 80px 18px 24px;
-      font-size: 1.3rem;
-      border: none;
-      border-radius: 60px;
-      background: rgba(40, 40, 60, 0.78);
-      backdrop-filter: blur(12px);
-      color: white;
-      outline: none;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      transition: all 0.3s;
+      width:100%; padding:18px 80px 18px 24px; font-size:1.3rem; border:none; border-radius:60px;
+      background:rgba(40,40,60,0.78); backdrop-filter:blur(12px); color:white; outline:none;
+      box-shadow:0 8px 32px rgba(0,0,0,0.5); transition:all 0.3s;
     }
-    input[type="text"]::placeholder {
-      color: rgba(255,255,255,0.55);
-    }
-    input[type="text"]:focus {
-      background: rgba(60, 60, 90, 0.92);
-      box-shadow: 0 0 0 4px rgba(0,180,255,0.45);
-    }
+    input[type="text"]::placeholder { color:rgba(255,255,255,0.55); }
+    input[type="text"]:focus { background:rgba(60,60,90,0.92); box-shadow:0 0 0 4px rgba(0,180,255,0.45); }
     .search-btn {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 54px;
-      height: 54px;
-      background: linear-gradient(135deg, #0066ff, #00aaff);
-      border: none;
-      border-radius: 50%;
-      color: white;
-      font-size: 1.8rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(0,100,255,0.5);
-      transition: all 0.25s;
+      position:absolute; right:8px; top:50%; transform:translateY(-50%);
+      width:54px; height:54px; background:linear-gradient(135deg,#0066ff,#00aaff); border:none; border-radius:50%;
+      color:white; font-size:1.8rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 6px 20px rgba(0,100,255,0.5); transition:all 0.25s;
     }
-    .search-btn:hover {
-      transform: translateY(-50%) scale(1.08);
-      box-shadow: 0 10px 30px rgba(0,120,255,0.7);
-    }
-    .arrows {
-      position: absolute;
-      bottom: 5%;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 3rem;
-      opacity: 0.4;
-      user-select: none;
-      display: flex;
-      gap: 4rem;
-    }
-    .arrow {
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .arrow:hover {
-      opacity: 0.9;
-      transform: scale(1.2);
-    }
+    .search-btn:hover { transform:translateY(-50%) scale(1.08); box-shadow:0 10px 30px rgba(0,120,255,0.7); }
+    .arrows { position:absolute; bottom:5%; left:50%; transform:translateX(-50%); font-size:3rem; opacity:0.4; user-select:none; display:flex; gap:4rem; }
+    .arrow { cursor:pointer; transition:all 0.3s; }
+    .arrow:hover { opacity:0.9; transform:scale(1.2); }
   </style>
 </head>
 <body>
@@ -149,6 +71,7 @@
     </div>
   </div>
 
+  <!-- Daydream X の本体部分をここに組み込み（検索したらここに遷移/ロード） -->
   <script>
     function handleSubmit(e) {
       e.preventDefault();
@@ -162,8 +85,37 @@
         targetUrl = 'https://www.google.com/search?q=' + encodeURIComponent(input);
       }
 
-      const proxyBase = 'https://www.croxyproxy.com/?';
-      window.open(proxyBase + encodeURIComponent(targetUrl), '_blank');
+      // Daydream X のプロキシページにリダイレクト（本番では自分のデプロイURLに）
+      // 例: https://your-daydreamx-deployment.vercel.app/?url=... みたいに
+      // 今はインラインでDaydream X HTMLをロードする形に（簡易）
+      document.body.innerHTML = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          <title>DayDream X - Powered by Science</title>
+          <!-- Daydream Xのスクリプト類（実際のデプロイ先からロード） -->
+          <script src="/data/bundle.js" defer></script>
+          <script src="/data/config.js" defer></script>
+          <script src="/assets/config.js" defer></script>
+          <script src="/assets/all.js" defer></script>
+          <!-- 他のlink/scriptもそのまま -->
+          <link rel="icon" type="image/x-icon" href="/res/logo.png">
+          <!-- ... 省略、他のmeta/scriptは君のコード通り -->
+        </head>
+        <body class="bg-[var(--background-color)] text-[var(--text-color)]">
+          <div id="browser-container"></div>
+          <!-- ここでDaydream XのJSが#browser-containerにタブ付きプロキシUIを構築 -->
+          <script>
+            // オプション: 自動でtargetUrlをDaydream Xに渡す（もし対応してれば）
+            // 実際のDaydream XはURLパラメータで?proxy=... とか対応してる場合が多い
+            window.location.href = 'https://your-daydream-deployment.com/?url=' + encodeURIComponent(targetUrl);
+            // またはそのままインラインで待機（JSロード待ち）
+          </script>
+        </body>
+        </html>
+      `;
     }
   </script>
 
